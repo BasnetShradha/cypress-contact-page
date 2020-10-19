@@ -45,7 +45,7 @@ git clone git@github.com:BasnetShradha/cypress-contact-page.git
 cd cypress-contact-page
 ```
 
-## Run Cyparess
+## Run Cypress
 ```sh
 yarn run cypress open
 ```
