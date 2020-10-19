@@ -13,6 +13,9 @@ describe('Contact Form', () => {
     })
   })
 
+  context('when some of the fields have various forms of data', () => {
+  })
+
   context('when all the fields have valid data', () => {
     it('returns success messages', () => {
       cy.visit(url)
