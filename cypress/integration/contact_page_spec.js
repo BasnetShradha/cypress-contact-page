@@ -127,6 +127,46 @@ describe('Contact Form', () => {
         })
       })
     })
+
+    context('query', () => {
+      beforeEach(() => {
+        cy.visit(url)
+
+        cy.get('[data-cy=input-name]')
+          .click()
+          .type('Bella Vista')
+
+        cy.get('[data-cy=input-email]')
+          .click()
+          .type('bella.vista@test.com')
+
+        cy.get('[data-cy=input-phone]')
+          .click()
+          .type('12344567')
+      })
+
+      context('when query has special characters', () => {
+        it('returns validation error message', () => {
+          cy.get('[data-cy=input-message]')
+            .click()
+            .type('-#$%^')
+
+          cy.contains('Submit').click()
+          cy.contains('Your message has been sent :)')
+        })
+      })
+
+      context('when query has long string', () => {
+        it('returns validation error message', () => {
+          cy.get('[data-cy=input-message]')
+            .click()
+            .type(long_string)
+
+          cy.contains('Submit').click()
+          cy.contains('Your message has been sent :)')
+        })
+      })
+    })
   })
 
   context('when all the fields have valid data', () => {
