@@ -128,6 +128,90 @@ describe('Contact Form', () => {
       })
     })
 
+    context('contact phone', () => {
+      beforeEach(() => {
+        cy.visit(url)
+
+        cy.get('[data-cy=input-name]')
+          .click()
+          .type('Bella Vista')
+
+        cy.get('[data-cy=input-email]')
+          .click()
+          .type('bella.vista@test.com')
+
+        cy.get('[data-cy=input-message]')
+          .click()
+          .type('Hi, This is Bella Vista.')
+      })
+
+      context('when contact phone has special characters', () => {
+        it('returns validation error message', () => {
+          cy.get('[data-cy=input-phone]')
+            .click()
+            .type('---#$%!')
+
+          cy.contains('Submit').click()
+          cy.contains('Agent Phone number is invalid')
+        })
+      })
+
+      context('when contact phone has alphanumeric characters', () => {
+        it('returns validation error message', () => {
+          cy.get('[data-cy=input-phone]')
+            .click()
+            .type('phone')
+
+          cy.contains('Submit').click()
+          cy.contains('Agent Phone number is invalid')
+        })
+      })
+
+      context('when contact phone has less than 6 numeric characters', () => {
+        it('returns validation error message', () => {
+          cy.get('[data-cy=input-phone]')
+            .click()
+            .type('1233')
+
+          cy.contains('Submit').click()
+          cy.contains('Agent Phone number is invalid')
+        })
+      })
+
+      context('when contact phone has more than 15 numeric characters', () => {
+        it('returns validation error message', () => {
+          cy.get('[data-cy=input-phone]')
+            .click()
+            .type('01234567890123456789')
+
+          cy.contains('Submit').click()
+          cy.contains('Agent Phone number is invalid')
+        })
+      })
+
+      context('when contact phone has country code', () => {
+        it('returns validation error message', () => {
+          cy.get('[data-cy=input-phone]')
+            .click()
+            .type('+61 0459 999 999')
+
+          cy.contains('Submit').click()
+          cy.contains('Agent Phone number is invalid')
+        })
+      })
+
+      context('when contact phone has numbers only', () => {
+        it('returns successful message', () => {
+          cy.get('[data-cy=input-phone]')
+            .click()
+            .type('0459999999')
+
+          cy.contains('Submit').click()
+          cy.contains('Your message has been sent :)')
+        })
+      })
+    })
+
     context('query', () => {
       beforeEach(() => {
         cy.visit(url)
