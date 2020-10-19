@@ -65,6 +65,68 @@ describe('Contact Form', () => {
         })
       })
     })
+
+    context('contact email', () => {
+      beforeEach(() => {
+        cy.visit(url)
+
+        cy.get('[data-cy=input-name]')
+          .click()
+          .type('Bella Vista')
+
+        cy.get('[data-cy=input-phone]')
+          .click()
+          .type('1234456789')
+
+        cy.get('[data-cy=input-message]')
+          .click()
+          .type('Hi, This is Bella Vista.')
+      })
+
+      context('when contact email has only numbers', () => {
+        it('does not return validation error message', () => {
+          cy.get('[data-cy=input-email]')
+            .click()
+            .type('123455')
+
+          cy.contains('Submit').click()
+          cy.contains('Your message has been sent :)')
+        })
+      })
+
+      context('when contact email has alphanumeric and special characters', () => {
+        it('does not return validation error message', () => {
+          cy.get('[data-cy=input-email]')
+            .click()
+            .type('hey%%@tesst.23#acom')
+
+          cy.contains('Submit').click()
+          cy.contains('Your message has been sent :)')
+        })
+      })
+
+      context('when contact email is not in correct format', () => {
+        it('does not return validation error message', () => {
+          cy.get('[data-cy=input-email]')
+            .click()
+            .type('hello@@test..com')
+
+          cy.contains('Submit').click()
+          cy.contains('Your message has been sent :)')
+        })
+      })
+
+      context('when contact email has long string', () => {
+        it('does not return validation error message', () => {
+          cy.get('[data-cy=input-email]')
+            .click()
+            .type(long_string)
+
+          cy.contains('Submit').click()
+          cy.contains('Your message has been sent :)')
+        })
+      })
+    })
   })
 
   context('when all the fields have valid data', () => {
